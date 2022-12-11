@@ -9,7 +9,6 @@ import pickle
 import psycopg2
 import pandas as pd
 
-# --
 
 if os.environ.get('RUNTIME_DOCKER', False):
     POSTGRES_HOST = os.environ['POSTGRES_HOST']
@@ -23,7 +22,6 @@ else:
     POSTGRES_PASSWORD = "hwdb_passwd"
 POSTGRES_URL = f"postgresql+psycopg2://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:5432/{POSTGRES_DB}"
 
-# --
 
 app = Flask(__name__)
 api = Api(app, title='ML models', description='Heart Attack Analysis & Prediction Dataset')
