@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  hw_db:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: "hwdb"
+      POSTGRES_USER: "hwdb_user"
+      POSTGRES_PASSWORD: "hwdb_passwd"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - ./data/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  hw_app:
+    image: kateandria/mlops_hw2:latest
+    environment:
+      POSTGRES_HOST: "hw_db"
+      POSTGRES_DB: "hwdb"
+      POSTGRES_USER: "hwdb_user"
+      POSTGRES_PASSWORD: "hwdb_passwd"
+    ports:
+      - "80:5000"
