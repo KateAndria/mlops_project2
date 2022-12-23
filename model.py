@@ -23,6 +23,13 @@ else:
     POSTGRES_PASSWORD = "hwdb_passwd"
 POSTGRES_URL = f"postgresql+psycopg2://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:5432/{POSTGRES_DB}"
 
+
+def get_postgress_data():
+    pg_client = create_engine(POSTGRES_URL)
+    df = pd.read_sql_query("""SELECT * FROM public.data""", pg_client)
+    pg_client.dispose()
+    return df
+
 class BaseModel():
     def __init__(self, model_name, model_params={}):
 
@@ -42,9 +49,7 @@ class BaseModel():
             raise TypeError(f"Bad params, choose another")
 
         try:
-            pg_client = create_engine(POSTGRES_URL)
-            self.df = pd.read_sql_query('SELECT * FROM public.data', pg_client)
-            pg_client.dispose()
+            self.df = get_postgress_data()
             # print(self.df.head())
         except Exception:
             raise TypeError("No data, check path")
